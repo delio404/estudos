@@ -50,6 +50,7 @@
           $scope.adicionarContato = function (contato) {
             $scope.contatos.push(angular.copy(contato));
             delete $scope.contato;
+            $scope.contatoForm.$setPristine()
           };
           $scope.apagarContatos = function (contatos) {
             $scope.contatos = contatos.filter(function (contato) {
@@ -94,7 +95,7 @@
       <hr />
 
       <form name="contatoForm">
-        <input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="insira um nome" ng-required="true"/>
+        <input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="insira um nome" ng-required="true" ng-minlength="10"/>
 
         <input class="form-control"  type="text" ng-model="contato.telefone" name="telefone" placeholder="insira um telefone" ng-required="true"/>
                
@@ -107,8 +108,12 @@
         </select>
       </form>
 
-      <div ng-show="contatoForm.nome.$invalid && contatoForm.nome.$dirty" class="alert alert-danger">
+      <div ng-show="contatoForm.nome.$error.required && contatoForm.nome.$dirty" class="alert alert-danger">
         Por favor, preencha o nome
+      </div>
+
+      <div ng-show="contatoForm.nome.$error.minlength && contatoForm.nome.$dirty" class="alert alert-danger">
+        O campo nome ver ter no minimo 10 caracteres
       </div>
 
       <div ng-show="contatoForm.telefone.$invalid && contatoForm.telefone.$dirty" class="alert alert-danger">
